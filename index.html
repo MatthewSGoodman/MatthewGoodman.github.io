@@ -1,174 +1,622 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Matthew Goodman's Portfolio</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            background-color: #f4f4f9;
-            color: #333;
-            line-height: 1.6;
-        }
-        header {
-            background-color: hwb(205 11% 1%);
-            color: white;
-            padding: 1rem 0;
-            text-align: center;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 2.5rem;
-        }
-        nav {
-            margin-top: 0.5rem;
-        }
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 1rem;
-            font-weight: bold;
-        }
-        nav a:hover {
-            text-decoration: underline;
-        }
-        main {
-            max-width: 900px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-        section {
-            margin-bottom: 3rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #ccc;
-        }
-        section h2 {
-            color:  hwb(205 11% 1%);
-            border-bottom: 3px solid  hwb(205 11% 1%);
-            padding-bottom: 0.3rem;
-        }
-        .projects {
-            display: grid;
-            grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
-            gap: 1.2rem;
-        }
-        .project-card {
-            background-color: white;
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.1);
-        }
-        .project-card h3 {
-            margin-top: 0;
-            margin-bottom: 0.5rem;
-            color: #003d7a;
-        }
-        .project-card p {
-            margin: 0.5rem 0;
-        }
-        .project-links a {
-            color:  hwb(205 11% 1%);
-            text-decoration: none;
-            margin-right: 1rem;
-            font-weight: bold;
-        }
-        .project-links a:hover {
-            text-decoration: underline;
-        }
-        footer {
-            background-color: #222;
-            color: #eee;
-            padding: 1rem 0;
-            text-align: center;
-        }
-        footer a {
-            color: #4db8ff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        footer a:hover {
-            text-decoration: underline;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Matthew Goodman's Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/scroll-out/2.2.14/scroll.out.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #1b6ca8;
+      --dark: #0d1b2a;
+      --light: #f0f4f8;
+      --accent: #e8f4fd;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Syne', sans-serif;
+      background: var(--light);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--dark);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.9rem 2.5rem;
+    }
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+    header nav a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      margin-left: 1.8rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      transition: color 0.2s;
+    }
+    header nav a:hover { color: white; }
+
+    /* ── HERO ── */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 0 8vw;
+      background: var(--dark);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; right: -60px;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(27,108,168,0.35) 0%, transparent 70%);
+    }
+    .hero-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 1rem;
+    }
+    .hero h2 {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      margin-bottom: 1.2rem;
+    }
+    .hero h2 span { color: var(--blue); }
+    .hero p {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.65);
+      max-width: 480px;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── ANIMATED SOCIAL LINKS ── */
+    .social-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .social-btn {
+      cursor: pointer;
+      height: 48px;
+      width: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      background: #1a2535;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: width 0.6s cubic-bezier(0.23, 1, 0.32, 1), border-radius 0.4s ease;
+      overflow: hidden;
+      text-decoration: none;
+      color: white;
+    }
+
+    .social-btn:hover {
+      width: 155px;
+      border-radius: 6px;
+    }
+
+    .social-btn svg {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      margin-left: 14px;
+      transition: margin 0.4s ease;
+    }
+
+    .social-btn:hover svg { margin-left: 12px; }
+
+    .social-btn span {
+      width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      transition: width 0.6s cubic-bezier(0.23, 1, 0.32, 1), padding 0.4s ease;
+    }
+
+    .social-btn:hover span {
+      width: 90px;
+      padding-left: 8px;
+      padding-right: 4px;
+    }
+
+    #btn-email svg { fill: #ea4335; }
+    #btn-linkedin svg { fill: #0e76a8; }
+    #btn-github svg { fill: #f0f0f0; }
+
+    /* ── SCROLL SPLIT LAYOUT ── */
+    .scrollHalf { position: relative; }
+
+    .scrollHalf__grupo {
+      transition: opacity 300ms ease-in-out;
+    }
+    .scrollHalf__grupo[data-scroll="out"] { opacity: 0; }
+    .scrollHalf__grupo[data-scroll="in"]  { opacity: calc(var(--visible-y) * 1.9); }
+
+    .scrollHalf__grupo__imagen { overflow: hidden; background: var(--dark); }
+    .scrollHalf__grupo__imagen img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .scrollHalf__grupo__contenido {
+      padding: 3rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    @media screen and (min-width: 900px) {
+      .scrollHalf__grupo {
+        min-height: 100vh;
+      }
+      .scrollHalf__grupo__imagen {
+        position: fixed;
+        top: 0; left: 0;
+        width: 50vw;
+        height: 100vh;
+      }
+      .scrollHalf__grupo__imagen img {
+        min-height: 100vh;
+        min-width: 50vw;
+        height: 100%;
+        object-fit: cover;
+      }
+      .scrollHalf__grupo__contenido {
+        margin: 0 4vw 0 54vw;
+        min-height: 100vh;
+      }
+    }
+
+    /* ── SECTION LABELS ── */
+    .section-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: var(--blue);
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+
+    .scrollHalf__grupo__contenido h2 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      line-height: 1.15;
+    }
+
+    .scrollHalf__grupo__contenido p {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: #444;
+      max-width: 500px;
+      margin-bottom: 1.2rem;
+    }
+
+    /* ── PROJECT CARDS ── */
+    .project-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 1200px) {
+      .project-grid { grid-template-columns: 1fr; }
+    }
+
+    .project-card {
+      background: white;
+      border-radius: 10px;
+      padding: 1.2rem;
+      border: 1px solid #e0e8f0;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .project-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(27,108,168,0.12);
+    }
+    .project-card h3 {
+      font-size: 1rem;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+      color: var(--dark);
+    }
+    .project-card p {
+      font-size: 0.85rem;
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+    }
+    .project-card .tech {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--blue);
+      margin-bottom: 0.6rem;
+    }
+    .project-card a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--dark);
+      text-decoration: none;
+      border-bottom: 1px solid currentColor;
+      margin-right: 0.8rem;
+      transition: color 0.2s;
+    }
+    .project-card a:hover { color: var(--blue); }
+
+    /* ── IMAGE OVERLAYS ── */
+    .img-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2.5rem;
+      background: linear-gradient(to top, rgba(13,27,42,0.85) 0%, transparent 60%);
+      color: white;
+    }
+    .img-overlay-wrap { position: relative; }
+    .img-overlay h3 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 0.3rem;
+    }
+    .img-overlay p {
+      font-size: 0.85rem;
+      opacity: 0.75;
+      font-family: 'Space Mono', monospace;
+    }
+
+    /* ── RESUME LINK ── */
+    .resume-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--dark);
+      color: white;
+      text-decoration: none;
+      padding: 0.85rem 1.8rem;
+      border-radius: 6px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      margin-top: 1rem;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .resume-btn:hover { background: var(--blue); transform: translateY(-2px); }
+
+    /* ── CONTACT LINKS ── */
+    .contact-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+    .contact-links .social-btn {
+      background: var(--dark);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 1.5rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+    }
+
+    /* ── VISUAL PANELS ── */
+    .panel-about {
+      background: linear-gradient(135deg, #0d1b2a 0%, #1b3a5c 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+    }
+    .panel-about__inner {
+      text-align: center;
+      color: white;
+    }
+    .panel-about__inner .big-letter {
+      font-size: 12rem;
+      font-weight: 800;
+      line-height: 1;
+      color: rgba(255,255,255,0.05);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      user-select: none;
+      pointer-events: none;
+    }
+    .panel-about__inner .initials {
+      font-size: 5rem;
+      font-weight: 800;
+      color: white;
+      letter-spacing: 0.08em;
+    }
+    .panel-about__inner .title {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.5);
+      margin-top: 0.5rem;
+    }
+
+    .panel-projects {
+      background: #e8f1f8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .panel-projects::before {
+      content: '</>'; 
+      font-family: 'Space Mono', monospace;
+      font-size: 8rem;
+      color: rgba(27,108,168,0.1);
+      position: absolute;
+      bottom: -1rem;
+      right: 1rem;
+      font-weight: 700;
+    }
+
+    .panel-resume {
+      background: var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .panel-resume::before {
+      content: 'CV';
+      font-size: 14rem;
+      font-weight: 800;
+      color: rgba(255,255,255,0.08);
+      position: absolute;
+    }
+    .panel-resume__inner {
+      text-align: center;
+      color: white;
+    }
+    .panel-resume__inner h3 {
+      font-size: 2.5rem;
+      font-weight: 800;
+    }
+    .panel-resume__inner p {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      opacity: 0.7;
+      margin-top: 0.5rem;
+      letter-spacing: 0.1em;
+    }
+
+    .panel-contact {
+      background: linear-gradient(135deg, #1a2535 0%, #0d1b2a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .panel-contact__inner { text-align: center; color: white; }
+    .panel-contact__inner h3 { font-size: 2.5rem; font-weight: 800; }
+    .panel-contact__inner p { font-family: 'Space Mono', monospace; font-size: 0.8rem; opacity: 0.5; margin-top: 0.5rem; }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Matthew Goodman</h1>
-        <nav>
-            <a href="#about">About</a>
-            <a href="#projects">Projects</a>
-            <a href="#resume">Resume</a>
-            <a href="#contact">Contact</a>
-        </nav>
-    </header>
 
-    <main>
-        <section id="about">
-            <h2>About Me</h2>
-            <p>Hello! I’m Matthew Goodman, an Electrical Engineering and Engineering Physics student with a minor in Mathematics at the University of Central Oklahoma. I enjoy tech projects and working on things that combine theory and practical applications. Welcome to my portfolio website!</p>
-        </section>
+  <header>
+    <h1>Matthew Goodman</h1>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#resume">Resume</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
-        <section id="projects">
-            <h2>Projects</h2>
-            <div class="projects">
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-label">Portfolio · 2025</div>
+    <h2>Electrical<br>Engineer &amp;<br><span>Builder.</span></h2>
+    <p>EE &amp; Engineering Physics student at UCO. I build things that bridge theory and real-world applications.</p>
+    <div class="social-links">
+      <a class="social-btn" id="btn-email" href="mailto:matthewsgoodman23@gmail.com" title="Email">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        <span>Email Me</span>
+      </a>
+      <a class="social-btn" id="btn-linkedin" href="https://www.linkedin.com/in/matthewgoodman05" target="_blank" title="LinkedIn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        <span>LinkedIn</span>
+      </a>
+      <a class="social-btn" id="btn-github" href="https://github.com/mgoodman2005" target="_blank" title="GitHub">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        <span>GitHub</span>
+      </a>
+    </div>
+  </section>
 
-                <div class="project-card">
-                    <h3>Signal Processing Toolbox</h3>
-                    <p>A toolbox in Python for digital signal processing analysis and filtering of sensor data.</p>
-                    <p><strong>Technologies:</strong> Python, NumPy, SciPy</p>
-                    <div class="project-links">
-                        <a href="https://github.com/yourusername/signal-processing-toolbox" target="_blank">GitHub Repo</a>
-                        <a href="#" target="_blank">Live Demo</a>
-                    </div>
-                </div>
+  <!-- SCROLL SPLIT SECTIONS -->
+  <div class="scrollHalf">
 
-                <div class="project-card">
-                    <h3>IoT Home Automation</h3>
-                    <p>Embedded system project automating lighting and temperature with IoT devices.</p>
-                    <p><strong>Technologies:</strong> Arduino, ESP32, MQTT</p>
-                    <div class="project-links">
-                        <a href="https://github.com/yourusername/iot-home-automation" target="_blank">GitHub Repo</a>
-                    </div>
-                </div>
+    <!-- ABOUT -->
+    <div class="scrollHalf__grupo" id="about" data-scroll>
+      <div class="scrollHalf__grupo__imagen">
+        <div class="panel-about" style="height:100%; min-height:100vh; position:relative;">
+          <div class="panel-about__inner">
+            <div class="initials">MG</div>
+            <div class="title">EE · ENGINEERING PHYSICS · MATH</div>
+          </div>
+        </div>
+      </div>
+      <div class="scrollHalf__grupo__contenido">
+        <div class="section-tag">01 · About</div>
+        <h2>Hello, I'm Matthew.</h2>
+        <p>I'm an Electrical Engineering and Engineering Physics student with a minor in Mathematics at the University of Central Oklahoma.</p>
+        <p>I enjoy tech projects and working on things that combine theory and practical applications — from digital signal processing to embedded IoT systems.</p>
+        <p>Welcome to my portfolio.</p>
+      </div>
+    </div>
 
-                <div class="project-card">
-                    <h3>Build-Your-Own-Car</h3>
-                    <p>Embedded system project automating lighting and temperature with IoT devices.</p>
-                    <p><strong>Technologies:</strong> Arduino, ESP32, MQTT</p>
-                    <div class="project-links">
-                        <a href="https://github.com/yourusername/iot-home-automation" target="_blank">GitHub Repo</a>
-                    </div>
-                </div>
+    <!-- PROJECTS -->
+    <div class="scrollHalf__grupo" id="projects" data-scroll>
+      <div class="scrollHalf__grupo__imagen">
+        <div class="panel-projects" style="height:100%; min-height:100vh;">
+          <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="40" width="160" height="120" rx="8" stroke="#1b6ca8" stroke-width="3" fill="none"/>
+            <line x1="20" y1="65" x2="180" y2="65" stroke="#1b6ca8" stroke-width="3"/>
+            <circle cx="35" cy="52" r="5" fill="#e8f1f8" stroke="#1b6ca8" stroke-width="2"/>
+            <circle cx="52" cy="52" r="5" fill="#e8f1f8" stroke="#1b6ca8" stroke-width="2"/>
+            <circle cx="69" cy="52" r="5" fill="#1b6ca8"/>
+            <text x="40" y="100" font-family="monospace" font-size="14" fill="#1b6ca8">$ run project</text>
+            <text x="40" y="120" font-family="monospace" font-size="12" fill="#aac4da">› compiling...</text>
+            <text x="40" y="140" font-family="monospace" font-size="12" fill="#aac4da">› success ✓</text>
+          </svg>
+        </div>
+      </div>
+      <div class="scrollHalf__grupo__contenido">
+        <div class="section-tag">02 · Projects</div>
+        <h2>Things I've Built.</h2>
+        <div class="project-grid">
 
-                <div class="project-card">
-                    <h3>Portfolio Website</h3>
-                    <p>Personal website hosted on GitHub Pages showcasing my projects and resume.</p>
-                    <p><strong>Technologies:</strong> HTML, CSS, GitHub Pages</p>
-                    <div class="project-links">
-                        <a href="https://yourusername.github.io" target="_blank">Live Site</a>
-                        <a href="https://github.com/yourusername/portfolio" target="_blank">GitHub Repo</a>
-                    </div>
-                </div>
+          <div class="project-card">
+            <h3>Signal Processing Toolbox</h3>
+            <p>Python toolbox for digital signal processing analysis and filtering of sensor data.</p>
+            <div class="tech">Python · NumPy · SciPy</div>
+            <a href="https://github.com/mgoodman2005/signal-processing-toolbox" target="_blank">GitHub ↗</a>
+            <a href="#" target="_blank">Demo ↗</a>
+          </div>
 
-            </div>
-        </section>
+          <div class="project-card">
+            <h3>IoT Home Automation</h3>
+            <p>Embedded system automating lighting and temperature control with IoT devices.</p>
+            <div class="tech">Arduino · ESP32 · MQTT</div>
+            <a href="https://github.com/mgoodman2005/iot-home-automation" target="_blank">GitHub ↗</a>
+          </div>
 
-        <section id="resume">
-            <h2>Resume</h2>
-            <p>You can <a href="assets/Matthew_Goodman_Resume_Fall_25.pdf" download>download my resume here</a>.</p>
-        </section>
+          <div class="project-card">
+            <h3>Build-Your-Own-Car</h3>
+            <p>Engineering project building a functional car from component-level hardware.</p>
+            <div class="tech">Arduino · ESP32 · MQTT</div>
+            <a href="https://github.com/mgoodman2005" target="_blank">GitHub ↗</a>
+          </div>
 
-        <section id="contact">
-            <h2>Contact</h2>
-            <p>If you'd like to get in touch, please email me at: <a href="mailto:matthewsgoodman23@gmail.com">matthewsgoodman23@gmail.com</a></p>
-            <p>Connect with me on <a href="https://www.linkedin.com/in/matthewgoodman05" target="_blank">LinkedIn</a> or check out my <a href="https://github.com/mgoodman2005" target="_blank">GitHub profile</a>.</p>
-        </section>
-    </main>
+          <div class="project-card">
+            <h3>Portfolio Website</h3>
+            <p>Personal site hosted on GitHub Pages showcasing my projects and resume.</p>
+            <div class="tech">HTML · CSS · GitHub Pages</div>
+            <a href="https://mgoodman2005.github.io" target="_blank">Live ↗</a>
+            <a href="https://github.com/mgoodman2005/portfolio" target="_blank">GitHub ↗</a>
+          </div>
 
-    <footer>
-        <p>© 2025 Matthew Goodman. All rights reserved.</p>
-    </footer>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESUME -->
+    <div class="scrollHalf__grupo" id="resume" data-scroll>
+      <div class="scrollHalf__grupo__imagen">
+        <div class="panel-resume" style="height:100%; min-height:100vh;">
+          <div class="panel-resume__inner">
+            <h3>Résumé</h3>
+            <p>FALL 2025</p>
+          </div>
+        </div>
+      </div>
+      <div class="scrollHalf__grupo__contenido">
+        <div class="section-tag">03 · Resume</div>
+        <h2>My Experience.</h2>
+        <p>Download my full resume to learn more about my academic background, projects, and technical skills in electrical engineering and engineering physics.</p>
+        <a class="resume-btn" href="assets/Matthew_Goodman_Resume_Fall_25.pdf" download>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-6-6h4V4h4v6h4l-6 6zm-6 2v2h12v-2H6z"/></svg>
+          Download Resume (PDF)
+        </a>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="scrollHalf__grupo" id="contact" data-scroll>
+      <div class="scrollHalf__grupo__imagen">
+        <div class="panel-contact" style="height:100%; min-height:100vh;">
+          <div class="panel-contact__inner">
+            <h3>Let's Talk.</h3>
+            <p>MATTHEW@GOODMAN</p>
+          </div>
+        </div>
+      </div>
+      <div class="scrollHalf__grupo__contenido">
+        <div class="section-tag">04 · Contact</div>
+        <h2>Get In Touch.</h2>
+        <p>Have a project idea, question, or just want to connect? I'd love to hear from you.</p>
+        <p>Email me at <a href="mailto:matthewsgoodman23@gmail.com" style="color:var(--blue); font-weight:700;">matthewsgoodman23@gmail.com</a></p>
+        <div class="contact-links">
+          <a class="social-btn" id="btn-email2" href="mailto:matthewsgoodman23@gmail.com" title="Email">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="fill:#ea4335"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            <span>Email</span>
+          </a>
+          <a class="social-btn" href="https://www.linkedin.com/in/matthewgoodman05" target="_blank">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="fill:#0e76a8"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            <span>LinkedIn</span>
+          </a>
+          <a class="social-btn" href="https://github.com/mgoodman2005" target="_blank">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="fill:#f0f0f0"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            <span>GitHub</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end scrollHalf -->
+
+  <footer>
+    <p>© 2025 Matthew Goodman · EE &amp; Engineering Physics · UCO</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      ScrollOut({
+        cssProps: {
+          visibleY: true,
+          viewportY: true,
+          scrollPercentY: true
+        },
+        threshold: 0.2
+      });
+    });
+  </script>
+
 </body>
 </html>
