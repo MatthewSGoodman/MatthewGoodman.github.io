@@ -1,2 +1,2 @@
-# mgoodman2005.github.io
+# MatthewSGoodman.github.io
 Matthew Goodman's engineering and tech project portfolio
